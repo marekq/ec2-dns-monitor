@@ -1,0 +1,15 @@
+service: ec2-dns-monitor 
+
+provider:
+  name: aws
+  runtime: python2.7
+  memorySize: 128 
+  timeout: 300
+  stage: dev
+  region: eu-west-1
+  environment:
+    zone: marek.rocks       # route53 zone that should be used to write DNS records - MODIFY THIS
+
+functions:
+  dns:
+    handler: getdns.lambda_handler
