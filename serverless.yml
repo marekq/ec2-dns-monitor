@@ -2,6 +2,16 @@ service: ec2-dns-monitor
 
 provider:
   name: aws
+  iamRoleStatements:
+    -  Effect: "Allow"
+       Action:
+         - route53:change_resource_record_sets
+         - route53:list_hosted_zones
+       Resource: "*"
+    -  Effect: "Allow"
+       Action:
+         - ec2:describeinstances
+       Resource: "*"
   runtime: python2.7
   memorySize: 128 
   timeout: 300

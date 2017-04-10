@@ -48,6 +48,21 @@
                 "logs:PutLogEvents"
               ],
               "Resource": "arn:aws:logs:eu-west-1:*:*"
+            },
+            {
+              "Effect": "Allow",
+              "Action": [
+                "route53:change_resource_record_sets",
+                "route53:list_hosted_zones"
+              ],
+              "Resource": "*"
+            },
+            {
+              "Effect": "Allow",
+              "Action": [
+                "ec2:describeinstances"
+              ],
+              "Resource": "*"
             }
           ]
         },
@@ -65,7 +80,7 @@
           "S3Bucket": {
             "Ref": "ServerlessDeploymentBucket"
           },
-          "S3Key": "serverless/ec2-dns-monitor/dev/1491764215592-2017-04-09T18:56:55.592Z/ec2-dns-monitor.zip"
+          "S3Key": "serverless/ec2-dns-monitor/dev/1491802904779-2017-04-10T05:41:44.779Z/ec2-dns-monitor.zip"
         },
         "FunctionName": "ec2-dns-monitor-dev-dns",
         "Handler": "getdns.lambda_handler",
