@@ -26,17 +26,14 @@ Once your Lambda script is set up, create an instance tag in the EC2 console and
 ![alt tag](https://raw.githubusercontent.com/marekq/ec2-dns-monitor/master/docs/2.jpg)
 
 
-Now you should be able to run the script and see if it succesfully created the records in Route53;
+Now you should be able to run the Lambda code and see if it succesfully created the records in Route53. The CloudWatch events should provide you with an overview of created records;
 
 ```bash
-START RequestId: d62889f6-1db0-11e7-9416-7944eeeddf9d Version: $LATEST
-found hosted zone 	marek.rocks.
-route53 dns zones 	marek.rocks.
+found hosted zone 		marek.rocks.
+route53 dns zones 		marek.rocks.
 
-created DNS A record 	 test.marek.rocks 	 		-> 52.18.44.x
-created DNS A record 	 anewdnsrecord.marek.rocks 	-> 34.252.178.x
-END RequestId: d62889f6-1db0-11e7-9416-7944eeeddf9d
-REPORT RequestId: d62889f6-1db0-11e7-9416-7944eeeddf9d	Duration: 1157.76 ms	Billed Duration: 1200 ms 	Memory Size: 128 MB	Max Memory Used: 43 MB
+created DNS A record 	test.marek.rocks 				-> 52.18.x.x
+created DNS A record 	anewdnsrecord.marek.rocks 		-> 34.252.x.x
 ```
 
 Backlog
@@ -46,7 +43,7 @@ Backlog
 - Deploy and trigger automatically whenever an AWS Config rule triggers a tag change on EC2. This would indicate the script needs to rerun again and check if there are new/changed DNS tags set on one of the instances, meaning the DNS record the user sets becomes available in a few seconds after the instance launches. 
 - Automatically deploy the correct IAM roles for the Lambda function so that the user doesn't have to do so. 
 - Automatically deploy the AWS Config rule and the SNS topic for the user using CloudFormation. 
-- Write an "FQDN" tag to the EC2 instance for which a DNS record was created, so the user knows what the public DNS name is. 
+- Write the full "FQDN" tag to the EC2 instance once a DNS record was created, so the user knows what the public DNS name is. 
 
 
 Contact

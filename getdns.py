@@ -5,15 +5,20 @@
 
 import boto3, os
 
+zonid 	= ''
+
 # get the zone id of the DNS zone defined in Lambda environment
 def get_r53_zid(c, zone):
 	global zonid
-	r 	= c.list_hosted_zones()
-	l 	= []
+
+	r 		= c.list_hosted_zones()
+	l 		= []
 
 	for y in range(len(r['HostedZones'])):
 		zname 	= r['HostedZones'][y]['Name']
 		zid 	= r['HostedZones'][y]['Id']
+		zonid 	= ''
+
 		l.append(zname)
 
 		if zone == zname or zone+'.' == zname:
@@ -61,15 +66,14 @@ def add_dns_rec(c, rname, ip, zone):
 def get_ec2(d, zone):
 	c 	= boto3.client('ec2')
 	r 	= c.describe_instances(Filters = [{'Name':'instance-state-name','Values':['running']}])
-	x 	= r['Reservations']
 
-	# create DNS records by reading the 'DNS' tag of every EC2 instance and adding the public IP to Route 53
-	for y in x:
-		for z in y['Instances'][0]['Tags']:
-			if z['Key'] == 'DNS':
-				iip 		= y['Instances'][0]['PublicIpAddress']
-				iid 		= y['Instances'][0]['InstanceId']
-				add_dns_rec(d, z['Value'], iip, zone)
+	for x in r['Reservations']:
+		for y in x['Instances']:
+			for z in y['Tags']:
+				if z['Key'] == 'DNS':
+					iip 		= y['PublicIpAddress']
+					iid 		= y['InstanceId']
+					add_dns_rec(d, z['Value'], iip, zone)
 
 
 # the lambda handler that kicks off the script
